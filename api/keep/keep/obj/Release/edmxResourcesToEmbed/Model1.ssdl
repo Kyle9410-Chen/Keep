@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SP_KeepModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="KeepLogs">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" />
+    <Property Name="KeepID" Type="bigint" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Keeps">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" />
+    <Property Name="UserID" Type="bigint" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Data" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="KeepTypeID" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="KeepTypes">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Color" Type="char" MaxLength="9" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_KeepLogs_Keeps">
+    <End Role="Keeps" Type="Self.Keeps" Multiplicity="1" />
+    <End Role="KeepLogs" Type="Self.KeepLogs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Keeps">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="KeepLogs">
+        <PropertyRef Name="KeepID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Keeps_KeepTypes">
+    <End Role="KeepTypes" Type="Self.KeepTypes" Multiplicity="1" />
+    <End Role="Keeps" Type="Self.Keeps" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="KeepTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Keeps">
+        <PropertyRef Name="KeepTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Keeps_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Keeps" Type="Self.Keeps" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Keeps">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SP_KeepModelStoreContainer">
+    <EntitySet Name="KeepLogs" EntityType="Self.KeepLogs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Keeps" EntityType="Self.Keeps" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="KeepTypes" EntityType="Self.KeepTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_KeepLogs_Keeps" Association="Self.FK_KeepLogs_Keeps">
+      <End Role="Keeps" EntitySet="Keeps" />
+      <End Role="KeepLogs" EntitySet="KeepLogs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Keeps_KeepTypes" Association="Self.FK_Keeps_KeepTypes">
+      <End Role="KeepTypes" EntitySet="KeepTypes" />
+      <End Role="Keeps" EntitySet="Keeps" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Keeps_Users" Association="Self.FK_Keeps_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Keeps" EntitySet="Keeps" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

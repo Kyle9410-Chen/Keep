@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SP_KeepModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="KeepLogs">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="KeepID" Type="bigint" Nullable="false" />
+          <Property Name="LastUpdateDate" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Keeps">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Data" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="KeepTypeID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KeepTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Color" Type="char" MaxLength="9" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_KeepLogs_Keeps">
+          <End Role="Keeps" Type="Self.Keeps" Multiplicity="1" />
+          <End Role="KeepLogs" Type="Self.KeepLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Keeps">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="KeepLogs">
+              <PropertyRef Name="KeepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Keeps_KeepTypes">
+          <End Role="KeepTypes" Type="Self.KeepTypes" Multiplicity="1" />
+          <End Role="Keeps" Type="Self.Keeps" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KeepTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Keeps">
+              <PropertyRef Name="KeepTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Keeps_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Keeps" Type="Self.Keeps" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Keeps">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SP_KeepModelStoreContainer">
+          <EntitySet Name="KeepLogs" EntityType="Self.KeepLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Keeps" EntityType="Self.Keeps" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KeepTypes" EntityType="Self.KeepTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_KeepLogs_Keeps" Association="Self.FK_KeepLogs_Keeps">
+            <End Role="Keeps" EntitySet="Keeps" />
+            <End Role="KeepLogs" EntitySet="KeepLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Keeps_KeepTypes" Association="Self.FK_Keeps_KeepTypes">
+            <End Role="KeepTypes" EntitySet="KeepTypes" />
+            <End Role="Keeps" EntitySet="Keeps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Keeps_Users" Association="Self.FK_Keeps_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Keeps" EntitySet="Keeps" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SP_KeepModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="KeepLogs">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="KeepID" Type="Int64" Nullable="false" />
+          <Property Name="LastUpdateDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Keeps" Relationship="Self.FK_KeepLogs_Keeps" FromRole="KeepLogs" ToRole="Keeps" />
+        </EntityType>
+        <EntityType Name="Keeps">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="KeepLogs" Relationship="Self.FK_KeepLogs_Keeps" FromRole="Keeps" ToRole="KeepLogs" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Keeps_Users" FromRole="Keeps" ToRole="Users" />
+          <Property Name="KeepTypeID" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="KeepTypes" Relationship="SP_KeepModel.FK_Keeps_KeepTypes" FromRole="Keeps" ToRole="KeepTypes" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Keeps" Relationship="Self.FK_Keeps_Users" FromRole="Users" ToRole="Keeps" />
+        </EntityType>
+        <Association Name="FK_KeepLogs_Keeps">
+          <End Role="Keeps" Type="Self.Keeps" Multiplicity="1" />
+          <End Role="KeepLogs" Type="Self.KeepLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Keeps">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="KeepLogs">
+              <PropertyRef Name="KeepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Keeps_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Keeps" Type="Self.Keeps" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Keeps">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="KeepEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="KeepLogs" EntityType="Self.KeepLogs" />
+          <EntitySet Name="Keeps" EntityType="Self.Keeps" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_KeepLogs_Keeps" Association="Self.FK_KeepLogs_Keeps">
+            <End Role="Keeps" EntitySet="Keeps" />
+            <End Role="KeepLogs" EntitySet="KeepLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Keeps_Users" Association="Self.FK_Keeps_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Keeps" EntitySet="Keeps" />
+          </AssociationSet>
+          <EntitySet Name="KeepTypes" EntityType="SP_KeepModel.KeepTypes" />
+          <AssociationSet Name="FK_Keeps_KeepTypes" Association="SP_KeepModel.FK_Keeps_KeepTypes">
+            <End Role="KeepTypes" EntitySet="KeepTypes" />
+            <End Role="Keeps" EntitySet="Keeps" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="KeepTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Color" Type="String" Nullable="false" MaxLength="9" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Keeps" Relationship="SP_KeepModel.FK_Keeps_KeepTypes" FromRole="KeepTypes" ToRole="Keeps" />
+        </EntityType>
+        <Association Name="FK_Keeps_KeepTypes">
+          <End Type="SP_KeepModel.KeepTypes" Role="KeepTypes" Multiplicity="1" />
+          <End Type="SP_KeepModel.Keeps" Role="Keeps" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KeepTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Keeps">
+              <PropertyRef Name="KeepTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SP_KeepModelStoreContainer" CdmEntityContainer="KeepEntities">
+          <EntitySetMapping Name="KeepLogs">
+            <EntityTypeMapping TypeName="SP_KeepModel.KeepLogs">
+              <MappingFragment StoreEntitySet="KeepLogs">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="KeepID" ColumnName="KeepID" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Keeps">
+            <EntityTypeMapping TypeName="SP_KeepModel.Keeps">
+              <MappingFragment StoreEntitySet="Keeps">
+                <ScalarProperty Name="KeepTypeID" ColumnName="KeepTypeID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SP_KeepModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KeepTypes">
+            <EntityTypeMapping TypeName="SP_KeepModel.KeepTypes">
+              <MappingFragment StoreEntitySet="KeepTypes">
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
